@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
+const config = require('./config/database');
+const passport = require('passport');
 
-mongoose.connect('mongodb://localhost/complaint-manager');
+mongoose.connect(config.database);
 let db = mongoose.connection;
 
 
@@ -59,6 +61,18 @@ app.use(function (req, res, next) {
     next();
 });
 
+// Passport Config
+require('./config/passport')(passport);
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('*', function(req,res,next){
+    res.locals.user = req.user || null;
+    next();
+});
+
 
 
 // ======================ROUTES=========================
@@ -79,7 +93,10 @@ app.get('/', function (req, res) {
 
 // Route Files
 let complaints = require('./routes/complaints');
+let users = require('./routes/users');
 app.use('/complaints', complaints);
+app.use('/users', users);
+
 
 // Starting server
 app.listen(3000, function () {

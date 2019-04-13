@@ -59,9 +59,7 @@ router.post('/add', function (req, res) {
                 res.redirect('/');
             }
         });
-
     }
-
 });
 
 // Update complaint

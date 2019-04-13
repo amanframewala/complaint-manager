@@ -9,3 +9,6 @@ block content
         if user.id == complaint.author
             a.btn.btn-secondary(href='/complaints/edit/' + complaint['_id']) Edit
             a.btn.btn-danger.delete-complaint(href='#', data-id= complaint['_id']) Delete
+        if user.type == 'admin'
+            a.btn.btn-secondary(href='/complaints/assign/' + complaint['_id']) Assign Engineer
+

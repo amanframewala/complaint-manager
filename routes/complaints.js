@@ -5,9 +5,6 @@ const router = express.Router();
 let Complaints = require('../models/complaints');
 let Users = require('../models/users');
 
-
-
-
 // Edit single complaint
 router.get('/edit/:id',ensureAuthenticated, function (req, res) {
     Complaints.findById(req.params.id, function (err, complaint) {
@@ -22,6 +19,26 @@ router.get('/edit/:id',ensureAuthenticated, function (req, res) {
             }
             res.render('edit_complaint', {
                 title: 'Edit Complaint',
+                complaint: complaint
+            });
+        }
+    });
+});
+
+// Assign engineer to  complaint
+router.get('/assign/:id',ensureAuthenticated, function (req, res) {
+    Complaints.findById(req.params.id, function (err, complaint) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            if(complaint.author != req.user._id){
+                req.flash('danger','Not authorized');
+                res.redirect('/');
+
+            }
+            res.render('edit_complaint', {
+                title: 'Assign Engineer',
                 complaint: complaint
             });
         }
@@ -43,7 +60,6 @@ router.post('/add',ensureAuthenticated, function (req, res) {
 
     // Get errors
     let errors = req.validationErrors();
-
     if (errors) {
         res.render('add_complaints', {
             title: 'Add Complaint',

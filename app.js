@@ -78,17 +78,34 @@ app.get('*', function(req,res,next){
 // ======================ROUTES=========================
 // Home Route
 app.get('/', function (req, res) {
-    Complaints.find({}, function (err, complaints) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.render('index', {
-                title: 'complaints',
-                complaints: complaints
-            });
-        }
-    });
+    if (req.user.type == 'admin'){
+        Complaints.find({}, function (err, complaints) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render('index', {
+                    title: 'complaints',
+                    complaints: complaints
+                });
+            }
+        });
+    }
+    else{
+        let query = {author: req.user._id};
+        Complaints.find(query, function (err, complaints) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render('index', {
+                    title: 'complaints',
+                    complaints: complaints
+                });
+            }
+        });
+
+    }
 });
 
 // Route Files

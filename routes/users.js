@@ -18,7 +18,6 @@ router.post('/register', function (req, res) {
     req.checkBody('username', 'Username is required').notEmpty();
     req.checkBody('password', 'Password is required').notEmpty();
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-    req.checkBody('type', 'Type is required').notEmpty();
 
     // Get errors
     let errors = req.validationErrors();
@@ -33,7 +32,7 @@ router.post('/register', function (req, res) {
             email:req.body.email,
             username:req.body.username,
             password:req.body.password,
-            type:req.body.type
+            type:'user'
         });
     
         bcrypt.genSalt(10,function(err,salt){
@@ -49,6 +48,55 @@ router.post('/register', function (req, res) {
                     } else {
                         req.flash('success', 'You are now registered and can log in');
                         res.redirect('/users/login');
+                    }
+                });
+            });
+        });
+    }
+});
+
+// Add engineer Form
+router.get('/add',function(req,res){
+    res.render('add_engineer');
+});
+
+router.post('/add', function (req, res) {
+    req.checkBody('name', 'Name is required').notEmpty();
+    req.checkBody('email', 'Email is required').notEmpty();
+    req.checkBody('email', 'Email is not valid').isEmail();
+    req.checkBody('username', 'Username is required').notEmpty();
+    req.checkBody('password', 'Password is required').notEmpty();
+    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+
+    // Get errors
+    let errors = req.validationErrors();
+    if (errors) {
+        res.render('register', {
+            errors: errors
+        });
+    } else {
+
+        let newUser = new Users({
+            name:req.body.name,
+            email:req.body.email,
+            username:req.body.username,
+            password:req.body.password,
+            type:'engineer'
+        });
+    
+        bcrypt.genSalt(10,function(err,salt){
+            bcrypt.hash(newUser.password,salt,function(err,hash){
+                if(err){
+                    console.log(err);
+                }
+                newUser.password = hash;
+                newUser.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    } else {
+                        req.flash('success', 'Engineer is now registered and can log in');
+                        res.redirect('/');
                     }
                 });
             });

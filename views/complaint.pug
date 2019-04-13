@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1= complaint['title']
+    h5 Filed by #{complaint['author']}
+    p= complaint['body']
+    hr
+    a.btn.btn-secondary(href='/complaints/edit/' + complaint['_id']) Edit
+    a.btn.btn-danger.delete-complaint(href='#', data-id= complaint['_id']) Delete

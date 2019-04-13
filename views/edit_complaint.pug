@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h1 #{title}
+    form(action="/complaints/edit/" + complaint['_id'], method="POST")
+        #form-group
+            label Title:
+            input.form-control(name='title', type="text" value=complaint['title'])
+        #form-group
+            label Author:
+            input.form-control(name='author', type="text" value=complaint['author'])
+        #form-group
+            label Body:
+            textarea.form-control(name='body')= complaint['body']
+        hr        
+        input.btn.btn-primary(type= 'submit', value='Submit')

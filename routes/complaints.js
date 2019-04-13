@@ -3,17 +3,23 @@ const router = express.Router();
 
 // Bring in models
 let Complaints = require('../models/complaints');
+let Users = require('../models/users');
 
 
 
 
 // Edit single complaint
-router.get('/edit/:id', function (req, res) {
+router.get('/edit/:id',ensureAuthenticated, function (req, res) {
     Complaints.findById(req.params.id, function (err, complaint) {
         if (err) {
             console.log(err);
         }
         else {
+            if(complaint.author != req.user._id){
+                req.flash('danger','Not authorized');
+                res.redirect('/');
+
+            }
             res.render('edit_complaint', {
                 title: 'Edit Complaint',
                 complaint: complaint
@@ -23,16 +29,16 @@ router.get('/edit/:id', function (req, res) {
 });
 
 //Add Route
-router.get('/add', function (req, res) {
+router.get('/add',ensureAuthenticated, function (req, res) {
     res.render('add_complaints', {
         title: 'Add Complaints'
     })
 });
 
 // Post new complaint
-router.post('/add', function (req, res) {
+router.post('/add',ensureAuthenticated, function (req, res) {
     req.checkBody('title', 'Title is required').notEmpty();
-    req.checkBody('author', 'Author is required').notEmpty();
+    // req.checkBody('author', 'Author is required').notEmpty();
     req.checkBody('body', 'Body is required').notEmpty();
 
     // Get errors
@@ -47,7 +53,7 @@ router.post('/add', function (req, res) {
 
         let complaint = new Complaints();
         complaint.title = req.body.title;
-        complaint.author = req.body.author;
+        complaint.author = req.user._id;
         complaint.body = req.body.body;
 
         complaint.save(function (err) {
@@ -84,27 +90,53 @@ router.post('/edit/:id', function (req, res) {
 
 // Deleting route
 router.delete('/:id', function (req, res) {
+
+    if(!req.user._id){
+        res.status(500).send();
+    }
+
     console.log(req.params.id);
     let query = { _id: req.params.id };
-    Complaints.remove(query, function (err) {
-        if (err) {
-            console.log(err);
+
+    Complaints.findById(req.params.id,function(err,complaint){
+        if(complaint.author != req.user._id){
+            res.status(500).send();
+        }else{
+            Complaints.remove(query, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+                res.send('Success!!!');
+            });
         }
-        res.send('Success!!!');
     });
 });
 
 // Get single complaint
 router.get('/:id', function (req, res) {
     Complaints.findById(req.params.id, function (err, complaint) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.render('complaint', {
-                complaint: complaint
-            });
-        }
+        Users.findById(complaint.author, function(err,user){
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render('complaint', {
+                    complaint: complaint,
+                    author:user.name
+                });
+            }
+        });
     });
 });
+
+// Access Control
+function ensureAuthenticated(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    else{
+        req.flash('danger','Please Login');
+        res.redirect('/users/login');
+    }
+}
 module.exports = router;

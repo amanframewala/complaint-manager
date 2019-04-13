@@ -2,8 +2,10 @@ extends layout
 
 block content
     h1= complaint['title']
-    h5 Filed by #{complaint['author']}
+    h5 Filed by #{author}
     p= complaint['body']
-    hr
-    a.btn.btn-secondary(href='/complaints/edit/' + complaint['_id']) Edit
-    a.btn.btn-danger.delete-complaint(href='#', data-id= complaint['_id']) Delete
+    br
+    if user
+        if user.id == complaint.author
+            a.btn.btn-secondary(href='/complaints/edit/' + complaint['_id']) Edit
+            a.btn.btn-danger.delete-complaint(href='#', data-id= complaint['_id']) Delete

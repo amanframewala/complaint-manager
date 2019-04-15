@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const renderer = require('../config/renderer_config');
+
 // Bring in models
 let Complaints = require('../models/complaints');
 let Users = require('../models/users');

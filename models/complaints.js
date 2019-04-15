@@ -22,7 +22,12 @@ let complaintSchema = mongoose.Schema({
     engineer:{
         type:'String',
         required: true
+    },
+    category:{
+        type:'String',
+        required: true
     }
+
 });
 
 let Complaint = module.exports = mongoose.model('Complaint',complaintSchema);

@@ -7,12 +7,21 @@ block content
     p= complaint['body']
     
     hr
-    if user
-        if user.id == complaint.author
-            a.btn.btn-secondary(href='/complaints/edit/' + complaint['_id']) Edit
-            a.btn.btn-danger.delete-complaint(href='#', data-id= complaint['_id']) Delete
-        if user.type == 'admin'
-            a.btn.btn-secondary(href='/complaints/assign/' + complaint['_id']) Assign Engineer
-        if user.id == complaint.engineer
-            a.btn.btn-primary.solved-complaint(href='#', data-id= complaint['_id']) Complaint Solved
+    if user 
+        if complaint.status != 'Solved'
+            if user.id == complaint.author
+                a.btn.btn-secondary(href='/complaints/edit/' + complaint['_id']) Edit
+                a.btn.btn-danger.delete-complaint(href='#', data-id= complaint['_id']) Delete
+            if user.type == 'admin'
+                a.btn.btn-secondary(href='/complaints/assign/' + complaint['_id']) Assign Engineer
+            if user.id == complaint.engineer
+                a.btn.btn-primary.solved-complaint(href='#', data-id= complaint['_id']) Complaint Solved
+        else 
+            if user.id == complaint.author
+                a.btn.btn-info Edit
+                a.btn.btn-info.delete-complaint Delete
+            if user.type == 'admin'
+                a.btn.btn-info Assign Engineer
+            if user.id == complaint.engineer
+                a.btn.btn-info Complaint Solved
 

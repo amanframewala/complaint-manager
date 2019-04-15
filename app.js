@@ -9,7 +9,7 @@ const config = require('./config/database');
 const passport = require('passport');
 const renderer = require('./config/renderer_config');
 
-mongoose.connect(config.database);
+mongoose.connect(config.database, {useNewUrlParser: true});
 let db = mongoose.connection;
 
 
@@ -88,7 +88,7 @@ app.get('/', function (req, res) {
         res.redirect('/users/login');
         return;
     }
-    else if (req.user.type == 'admin') {
+    else if (req.user.type === 'admin') {
         Complaints.find({}, function (err, complaints) {
             if (err) {
                 console.log(err);
@@ -101,7 +101,7 @@ app.get('/', function (req, res) {
             }
         });
     }
-    else if (req.user.type == 'user') {
+    else if (req.user.type === 'user') {
         let query = { author: req.user._id };
         Complaints.find(query, function (err, complaints) {
             if (err) {

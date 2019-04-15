@@ -22,6 +22,14 @@ let complaintSchema = mongoose.Schema({
     engineer:{
         type:'String',
         required: true
+    },
+    timestamp:{
+        type:'Number',
+        required: true
+    },
+    category:{
+        type:'String',
+        required: true
     }
 });
 

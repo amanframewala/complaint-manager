@@ -102,7 +102,7 @@ router.post('/edit/:id', function (req, res) {
 
     let query = { _id: req.params.id }
 
-    Complaints.update(query, complaint, function (err) {
+    Complaints.updateOne(query, complaint, function (err) {
         if (err) {
             console.log(err);
             return;
@@ -113,7 +113,7 @@ router.post('/edit/:id', function (req, res) {
     });
 });
 
-// Update complaint
+// Update complaint Engineer
 router.post('/assign/:id', function (req, res) {
     let complaint = {};
     complaint.engineer = req.body.engineer;
@@ -121,7 +121,7 @@ router.post('/assign/:id', function (req, res) {
 
     let query = { _id: req.params.id }
 
-    Complaints.update(query, complaint, function (err) {
+    Complaints.updateOne(query, complaint, function (err) {
         if (err) {
             console.log(err);
             return;
@@ -132,13 +132,30 @@ router.post('/assign/:id', function (req, res) {
     });
 });
 
+// Update Complaint Status
+router.post('/solve/:id', function (req, res) {
+    let complaint = {};
+    complaint.status = 'Solved';
+
+    let query = { _id: req.params.id }
+
+    Complaints.updateOne(query, complaint, function (err) {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            req.flash('success', 'Complaint solved successfully');
+            res.redirect('/');
+        }
+    });
+});
+
+
 // Deleting route
 router.delete('/:id', function (req, res) {
-
     if (!req.user._id) {
         res.status(500).send();
     }
-
     console.log(req.params.id);
     let query = { _id: req.params.id };
 

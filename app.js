@@ -7,7 +7,6 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const config = require('./config/database');
 const passport = require('passport');
-
 const renderer = require('./config/renderer_config');
 
 mongoose.connect(config.database);
@@ -137,6 +136,11 @@ app.get('/', function (req, res) {
 
     }
 });
+// Route Files
+let complaints = require('./routes/complaints');
+let users = require('./routes/users');
+app.use('/complaints', complaints);
+app.use('/users', users);
 
 // Starting server
 app.listen(3000, function () {

@@ -2,7 +2,26 @@ extends layout
 
 block content
     h1 #{title}
+
+    
     ul
         each complaint, i in complaints
-            li.list-group-item
-                a(href='/complaints/'+ complaint['_id'])= complaint['title']
+            if complaint.status == 'registered'
+                li.list-group-item
+                    a(href='/complaints/'+ complaint['_id'])= complaint['title']
+                    b.text-left.inline 
+                        a(href='/complaints/'+ complaint['_id'])= complaint['title']
+                    span.float-right
+                        i Pending
+            if complaint.status == 'assigned'
+                li.list-group-item
+                    b.text-left.inline 
+                        a(href='/complaints/'+ complaint['_id'])= complaint['title']
+                    span.float-right
+                        i Being Processed
+            if complaint.status == 'Solved'
+                li.list-group-item
+                    b.text-left.inline 
+                        a(href='/complaints/'+ complaint['_id'])= complaint['title']
+                    span.float-right
+                        i Solved

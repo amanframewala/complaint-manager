@@ -8,6 +8,9 @@ const session = require('express-session');
 const config = require('./config/database');
 const passport = require('passport');
 
+const userRouter       = require('./routes/users');
+const complaintsRouter = require('./routes/complaints');
+
 const renderer = require('./config/renderer_config');
 
 mongoose.connect(config.database);
@@ -137,6 +140,11 @@ app.get('/', function (req, res) {
 
     }
 });
+
+
+app.use('/users', userRouter);
+app.use('/complaints', complaintsRouter);
+
 
 // Starting server
 app.listen(3000, function () {

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const renderer = require('../config/renderer_config');
+
 // Bring in models
 let Complaints = require('../models/complaints');
 let Users = require('../models/users');
@@ -54,6 +56,7 @@ router.get('/add',ensureAuthenticated, function (req, res) {
 
 // Post new complaint
 router.post('/add',ensureAuthenticated, function (req, res) {
+
     req.checkBody('title', 'Title is required').notEmpty();
     // req.checkBody('author', 'Author is required').notEmpty();
     req.checkBody('body', 'Body is required').notEmpty();

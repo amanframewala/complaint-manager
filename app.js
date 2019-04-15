@@ -8,6 +8,8 @@ const session = require('express-session');
 const config = require('./config/database');
 const passport = require('passport');
 
+const renderer = require('./config/renderer_config');
+
 mongoose.connect(config.database);
 let db = mongoose.connection;
 
@@ -34,7 +36,8 @@ let Complaints = require('./models/complaints');
 
 // Load View engine
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+
+app.set('view engine', renderer);
 
 // Body parser Middleware
 // parse application/x-www-form-urlencoded
@@ -45,6 +48,10 @@ app.use(bodyParser.json())
 
 // Set public folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/assets' ,express.static(path.join(__dirname, 'assets')));
+
 
 // Express Session Middleware
 app.use(session({
@@ -78,6 +85,12 @@ app.get('*', function(req,res,next){
 // ======================ROUTES=========================
 // Home Route
 app.get('/', function (req, res) {
+
+    if (req.user === undefined) {
+        res.redirect('/users/login');
+        return;
+    }
+
     if (req.user.type == 'admin'){
         Complaints.find({}, function (err, complaints) {
             if (err) {
@@ -98,10 +111,16 @@ app.get('/', function (req, res) {
                 console.log(err);
             }
             else {
-                res.render('index', {
-                    title: 'complaints',
-                    complaints: complaints
-                });
+                if (renderer === 'pug')
+                    res.render('index', {
+                        title: 'complaints',
+                        complaints: complaints
+                    });
+                else
+                    res.render('user-content', {
+                        complaints: complaints
+                    });
+
             }
         });
 

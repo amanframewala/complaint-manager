@@ -1,0 +1,146 @@
+{% set title = 'Test' %}
+
+{% extends "user-layout.twig" %}
+{% block content %}
+<style>
+  .select2.select2-container.select2-container--default{
+    width: 100% !important;
+}
+</style>
+
+<div class="bg-white border rounded">
+  <div class="row no-gutters">
+    <div class="col-lg-4 col-xl-3">
+      <div class="profile-content-left pt-5 pb-3 px-3 px-xl-5">
+        <div class="card text-center widget-profile px-0 border-0">
+          <div class="card-img mx-auto rounded-circle">
+            <img src="/assets/img/user/u6.jpg" alt="user image">
+          </div>
+          <div class="card-body">
+            <h4 class="py-2 text-dark">Albrecht Straub</h4>
+            <p>Albrecht.straub@gmail.com</p>
+          </div>
+        </div>
+        <div class="d-flex justify-content-around ">
+          <div class="text-center pb-4">
+            <h6 class="text-dark pb-2">1503</h6>
+            <p>Pending</p>
+          </div>
+          <div class="text-center pb-4">
+            <h6 class="text-dark pb-2">2905</h6>
+            <p>Queued</p>
+          </div>
+          <div class="text-center pb-4">
+            <h6 class="text-dark pb-2">1200</h6>
+            <p>Resolved</p>
+          </div>
+        </div>
+
+        <hr class="w-100" />
+
+
+        <div class="contact-info pt-4">
+          <h5 class="text-dark mb-1">Contact Us</h5>
+          <p class="text-dark font-weight-medium pt-4 mb-2">Email address</p>
+          <p>schnellerhelfer-helpdesk@example.com</p>
+          <p class="text-dark font-weight-medium pt-4 mb-2">Helpline</p>
+          <p>+00 000 000 000</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-xl-9">
+      <div class="profile-content-right py-5">
+        <ul class="nav nav-tabs px-3 px-xl-5 nav-style-border" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab" aria-controls="timeline" aria-selected="true">Logged Complaints</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">New Complaint</a>
+          </li>
+        </ul>
+        <div class="tab-content px-3 px-xl-5" id="myTabContent">
+          <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+            <div class="media mt-5 profile-timeline-media">
+              <div class="media-body">
+                <h6 class="mt-0 text-dark">Potholes everywhere! Valve, plz fix</h6>
+                <span>Road Constructions</span>
+                <span class="float-right">5 mins ago</span>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                  magna aliqua. ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+                <div class="d-inline-block rounded overflow-hidden mt-4 mr-0 mr-lg-4">
+                  <img src="/assets/img/products/pa1.jpg" alt="Product">
+                </div>
+                <div class="d-inline-block rounded overflow-hidden mt-4 mr-0 mr-lg-4">
+                  <img src="/assets/img/products/pa2.jpg" alt="Product">
+                </div>
+                <div class="d-inline-block rounded overflow-hidden mt-4 mr-0 mr-lg-4">
+                  <img src="/assets/img/products/pa3.jpg" alt="Product">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="card card-default mt-4 mx-auto" style="max-width:600px;">
+              <div class="card-header card-header-border-bottom">
+                <h2>Issue a complaint</h2>
+              </div>
+              <div class="card-body">
+                <form id="complaintForm" method="POST" enctype="multipart/form-data">
+                  <div class="col-md-12 mb-3">
+                    <label for="complaint-title">Title</label>
+                    <input type="text" name="title" id="title" class="form-control" placeholder="A short title to summarize the complaint" required />    
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="categories">Categories</label>
+                    <br />
+                    <select id="categories" class="js-example-basic-multiple form-control d-block" name="categories[]" multiple="multiple" >
+                      <option value="Construction">Construction</option>
+                      <option value="Misc">Miscelaneous</option>
+                    </select>
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="complaint-details">Description</label>
+                    <textarea type="text" name="body" id="complaint-body" class="form-control" placeholder="Give a detailed description of the complaint." required ></textarea>
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="files">Photos/Screenshots</label>
+                    <input type="file" name="files" id="files" class="form-control-file"/>
+                    <br />
+                    <button class="btn btn-primary" type="submit">Submit Complaint</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/plugins/jquery/jquery.min.js"></script>
+
+
+
+<script src="/assets/plugins/slimscrollbar/jquery.slimscroll.min.js"></script>
+<script src="/assets/plugins/jekyll-search.min.js"></script>
+
+
+
+  
+
+
+<script src="/assets/plugins/jquery-mask-input/jquery.mask.min.js"></script>
+  
+
+
+<script src="/assets/js/sleek.bundle.js"></script>
+<script src="/assets/plugins/select2/js/select2.min.js"></script>
+
+<script>
+$('.js-example-basic-multiple').select2();
+</script>
+
+<script src="/public/js/complaintForm.js"></script>
+
+{% endblock %}

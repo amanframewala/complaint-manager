@@ -3,12 +3,19 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
+const renderer = require('../config/renderer_config');
+
+
 // Bring in models
 let Users = require('../models/users');
 
 // Register Form
 router.get('/register',function(req,res){
-    res.render('register');
+
+    if (renderer === 'pug')
+        res.render('register');
+    else
+        res.render('signup');
 });
 
 router.post('/register', function (req, res) {
@@ -22,9 +29,15 @@ router.post('/register', function (req, res) {
     // Get errors
     let errors = req.validationErrors();
     if (errors) {
-        res.render('register', {
-            errors: errors
-        });
+        if (renderer === 'pug')
+            res.render('register', {
+                errors: errors
+            });
+        else
+            res.render('signup', {
+                errors: errors
+            });
+
     } else {
 
         let newUser = new Users({
@@ -71,9 +84,15 @@ router.post('/add', function (req, res) {
     // Get errors
     let errors = req.validationErrors();
     if (errors) {
-        res.render('register', {
-            errors: errors
-        });
+        if (renderer === 'pug')
+            res.render('register', {
+                errors: errors
+            });
+        else
+            res.render('signup', {
+                errors: errors
+            });
+
     } else {
 
         let newUser = new Users({
@@ -107,7 +126,10 @@ router.post('/add', function (req, res) {
 
 // Login Form
 router.get('/login',function(req,res){
-    res.render('login');
+    if (renderer === 'pug')
+        res.render('login');
+    else
+        res.render('signin');
 });
 
 // Login Process

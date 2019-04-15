@@ -1,0 +1,148 @@
+{% set navbarType = 'user' %}
+
+
+{% extends "base.twig" %}
+{% block body %}
+
+<div class="wrapper">
+  <!-- Github Link -->
+  <a href="https://github.com/tafcoder/sleek-dashboard" class="github-link">
+    <svg width="70" height="70" viewBox="0 0 250 250" aria-hidden="true">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="75%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#896def;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#482271;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <path d="M 0,0 L115,115 L115,115 L142,142 L250,250 L250,0 Z" fill="url(#grad1)"></path>
+    </svg>
+    <i class="mdi mdi-github-circle"></i>
+  </a>
+
+  
+
+  <div class="page-wrapper"  style="padding-left:0;">
+              <!-- Header -->
+        <header class="main-header " id="header" style="padding-left:0;">
+          <nav class="navbar navbar-static-top navbar-expand-lg">
+            <div class="app-brand">
+              <a href="/index.html">
+                <svg
+                  class="brand-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  preserveAspectRatio="xMidYMid"
+                  width="30"
+                  height="33"
+                  viewBox="0 0 30 33"
+                >
+                  <g fill="none" fill-rule="evenodd">
+                    <path
+                      class="logo-fill-blue"
+                      fill="#7DBCFF"
+                      d="M0 4v25l8 4V0zM22 4v25l8 4V0z"
+                    />
+                    <path class="logo-fill-white" fill="#FFF" d="M11 4v25l8 4V0z" />
+                  </g>
+                </svg>
+                <span class="brand-name">Schneller Helfer</span>
+              </a>
+            </div>
+            <div class="navbar-right ">
+              <ul class="nav navbar-nav">
+                <li class="dropdown notifications-menu">
+                  <button class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="mdi mdi-bell-outline"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="dropdown-header">You have 5 notifications</li>
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-account-plus"></i> New user registered
+                        <span class=" font-size-12 d-inline-block float-right"><i class="mdi mdi-clock-outline"></i> 10 AM</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-account-remove"></i> User deleted
+                        <span class=" font-size-12 d-inline-block float-right"><i class="mdi mdi-clock-outline"></i> 07 AM</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-chart-areaspline"></i> Sales report is ready
+                        <span class=" font-size-12 d-inline-block float-right"><i class="mdi mdi-clock-outline"></i> 12 PM</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-account-supervisor"></i> New client
+                        <span class=" font-size-12 d-inline-block float-right"><i class="mdi mdi-clock-outline"></i> 10 AM</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-server-network-off"></i> Server overloaded
+                        <span class=" font-size-12 d-inline-block float-right"><i class="mdi mdi-clock-outline"></i> 05 AM</span>
+                      </a>
+                    </li>
+                    <li class="dropdown-footer">
+                      <a class="text-center" href="#"> View All </a>
+                    </li>
+                  </ul>
+                </li>
+                <!-- User Account -->
+                <li class="dropdown user-menu">
+                  <button href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <img src="/assets/img/user/user.png" class="user-image" alt="User Image" />
+                    <span class="d-none d-lg-inline-block">Abdus Salam</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <!-- User image -->
+                    <li class="dropdown-header">
+                      <img src="/assets/img/user/user.png" class="img-circle" alt="User Image" />
+                      <div class="d-inline-block">
+                        Abdus Salam <small class="pt-1">iamabdus@gmail.com</small>
+                      </div>
+                    </li>
+
+         
+                    <li class="dropdown-footer" style="border-top:none;">
+                      <a href="index.html"> <i class="mdi mdi-logout"></i> Log Out </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+
+        </header>
+
+
+    <div class="content-wrapper">
+      <div class="content">{% block content %} {% endblock %}</div>
+    </div>
+
+              <footer class="footer mt-auto">
+          <div class="copyright bg-white">
+            <p>
+              &copy; <span id="copy-year">2019</span> Copyright Sleek Dashboard Bootstrap Template by
+              <a
+                class="text-primary"
+                href="http://www.iamabdus.com/"
+                target="_blank"
+                >Abdus</a
+              >.
+            </p>
+          </div>
+          <script>
+              var d = new Date();
+              var year = d.getFullYear();
+              document.getElementById("copy-year").innerHTML = year;
+          </script>
+        </footer>
+
+  </div>
+</div>
+
+{% endblock %}

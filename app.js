@@ -78,32 +78,52 @@ app.get('*', function(req,res,next){
 // ======================ROUTES=========================
 // Home Route
 app.get('/', function (req, res) {
-    if (req.user.type == 'admin'){
-        Complaints.find({}, function (err, complaints) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                res.render('index', {
-                    title: 'complaints',
-                    complaints: complaints
-                });
-            }
-        });
+    if(req.user){
+        if (req.user.type == 'admin'){
+            Complaints.find({}, function (err, complaints) {
+                if (err) {
+                    console.log(err);
+                }
+                else{
+                    res.render('index', {
+                        title: 'All Complaints',
+                        complaints: complaints
+                    });
+                }
+            });
+        }
+        else if (req.user.type == 'user'){
+            let query = {author: req.user._id};
+            Complaints.find(query, function (err, complaints) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.render('index', {
+                        title: 'Complaints Registered',
+                        complaints: complaints
+                    });
+                }
+            });
+        }
+        else{
+            let query = {engineer: req.user._id};
+            Complaints.find(query, function (err, complaints) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.render('index', {
+                        title: 'Complaints Assigned',
+                        complaints: complaints
+                    });
+                }
+            });
+    
+        }
     }
     else{
-        let query = {author: req.user._id};
-        Complaints.find(query, function (err, complaints) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                res.render('index', {
-                    title: 'complaints',
-                    complaints: complaints
-                });
-            }
-        });
+        res.redirect('/users/login');
 
     }
 });

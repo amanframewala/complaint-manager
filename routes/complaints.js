@@ -6,16 +6,15 @@ let Complaints = require('../models/complaints');
 let Users = require('../models/users');
 
 // Edit single complaint
-router.get('/edit/:id',ensureAuthenticated, function (req, res) {
+router.get('/edit/:id', ensureAuthenticated, function (req, res) {
     Complaints.findById(req.params.id, function (err, complaint) {
         if (err) {
             console.log(err);
         }
         else {
-            if(complaint.author != req.user._id){
-                req.flash('danger','Not authorized');
+            if (complaint.author != req.user._id) {
+                req.flash('danger', 'Not authorized');
                 res.redirect('/');
-
             }
             res.render('edit_complaint', {
                 title: 'Edit Complaint',
@@ -26,38 +25,43 @@ router.get('/edit/:id',ensureAuthenticated, function (req, res) {
 });
 
 // Assign engineer to  complaint
-router.get('/assign/:id',ensureAuthenticated, function (req, res) {
+router.get('/assign/:id', ensureAuthenticated, function (req, res) {
     Complaints.findById(req.params.id, function (err, complaint) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            if(complaint.author != req.user._id){
-                req.flash('danger','Not authorized');
-                res.redirect('/');
-
+        Users.find({ type: 'engineer' }, function (err, engineer) {
+            if (err) {
+                console.log(err);
             }
-            res.render('edit_complaint', {
-                title: 'Assign Engineer',
-                complaint: complaint
-            });
-        }
+            else {
+                console.log('Engineer',engineer);
+
+                if (req.user.type != 'admin') {
+                    req.flash('danger', 'Not authorized');
+                    res.redirect('/');
+                }
+                res.render('assign_engineer', {
+                    title: 'Assign Engineer',
+                    complaint: complaint,
+                    engineer: engineer
+                });
+            }
+
+
+        });
     });
 });
 
 //Add Route
-router.get('/add',ensureAuthenticated, function (req, res) {
+router.get('/add', ensureAuthenticated, function (req, res) {
     res.render('add_complaints', {
         title: 'Add Complaints'
     })
 });
 
 // Post new complaint
-router.post('/add',ensureAuthenticated, function (req, res) {
+router.post('/add', ensureAuthenticated, function (req, res) {
     req.checkBody('title', 'Title is required').notEmpty();
     // req.checkBody('author', 'Author is required').notEmpty();
     req.checkBody('body', 'Body is required').notEmpty();
-
     // Get errors
     let errors = req.validationErrors();
     if (errors) {
@@ -66,11 +70,12 @@ router.post('/add',ensureAuthenticated, function (req, res) {
             errors: errors
         });
     } else {
-
         let complaint = new Complaints();
         complaint.title = req.body.title;
         complaint.author = req.user._id;
         complaint.body = req.body.body;
+        complaint.status = 'Registered';
+        complaint.engineer = 'none';
 
         complaint.save(function (err) {
             if (err) {
@@ -90,6 +95,8 @@ router.post('/edit/:id', function (req, res) {
     complaint.title = req.body.title;
     complaint.author = req.body.author;
     complaint.body = req.body.body;
+    complaint.status = 'registered';
+    complaint.engineer = 'none';
 
     let query = { _id: req.params.id }
 
@@ -104,20 +111,39 @@ router.post('/edit/:id', function (req, res) {
     });
 });
 
+// Update complaint
+router.post('/assign/:id', function (req, res) {
+    let complaint = {};
+    complaint.engineer = req.body.engineer;
+    complaint.status = 'assigned';
+
+    let query = { _id: req.params.id }
+
+    Complaints.update(query, complaint, function (err) {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            req.flash('success', 'Engineer Added successfully');
+            res.redirect('/');
+        }
+    });
+});
+
 // Deleting route
 router.delete('/:id', function (req, res) {
 
-    if(!req.user._id){
+    if (!req.user._id) {
         res.status(500).send();
     }
 
     console.log(req.params.id);
     let query = { _id: req.params.id };
 
-    Complaints.findById(req.params.id,function(err,complaint){
-        if(complaint.author != req.user._id){
+    Complaints.findById(req.params.id, function (err, complaint) {
+        if (complaint.author != req.user._id) {
             res.status(500).send();
-        }else{
+        } else {
             Complaints.remove(query, function (err) {
                 if (err) {
                     console.log(err);
@@ -131,14 +157,14 @@ router.delete('/:id', function (req, res) {
 // Get single complaint
 router.get('/:id', function (req, res) {
     Complaints.findById(req.params.id, function (err, complaint) {
-        Users.findById(complaint.author, function(err,user){
+        Users.findById(complaint.author, function (err, user) {
             if (err) {
                 console.log(err);
             }
             else {
                 res.render('complaint', {
                     complaint: complaint,
-                    author:user.name
+                    author: user.name
                 });
             }
         });
@@ -146,12 +172,12 @@ router.get('/:id', function (req, res) {
 });
 
 // Access Control
-function ensureAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
         return next();
     }
-    else{
-        req.flash('danger','Please Login');
+    else {
+        req.flash('danger', 'Please Login');
         res.redirect('/users/login');
     }
 }

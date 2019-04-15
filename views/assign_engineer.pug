@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    h1= complaint['title']
+    h5 Filed by #{author}
+    h5 Status: #{complaint.status}  
+    hr
+    h3 List of engineers 
+    br
+    form(action="/complaints/assign/"+complaint['_id'], method="POST")
+        if user
+            each eng, i in engineer
+                #form-group
+                li.list-group-item
+                    input(type='radio', name='engineer', value=eng['_id']) 
+                    span= ' '+ eng['name']
+        #form-group
+        hr        
+        input.btn.btn-primary(type= 'submit', value='Submit')
+

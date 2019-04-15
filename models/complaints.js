@@ -14,6 +14,14 @@ let complaintSchema = mongoose.Schema({
     body:{
         type:'String',
         required: true
+    },
+    status:{
+        type:'String',
+        required: true
+    },
+    engineer:{
+        type:'String',
+        required: true
     }
 });
 

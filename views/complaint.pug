@@ -3,8 +3,10 @@ extends layout
 block content
     h1= complaint['title']
     h5 Filed by #{author}
+    h5 Status: #{complaint.status}
     p= complaint['body']
-    br
+    
+    hr
     if user
         if user.id == complaint.author
             a.btn.btn-secondary(href='/complaints/edit/' + complaint['_id']) Edit

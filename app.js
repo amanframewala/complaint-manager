@@ -9,7 +9,7 @@ const config = require('./config/database');
 const passport = require('passport');
 const renderer = require('./config/renderer_config');
 
-mongoose.connect(config.database, {useNewUrlParser: true});
+mongoose.connect(config.database, { useNewUrlParser: true });
 let db = mongoose.connection;
 
 
@@ -86,23 +86,26 @@ app.get('*', function (req, res, next) {
 // Home Route
 app.get('/', function (req, res) {
     console.log(req.user)
-    if(req.user === undefined) {
+    if (req.user === undefined) {
         res.redirect('/users/login');
         return;
     }
     else if (req.user.type === 'admin') {
         Complaints.find({}, function (err, complaints) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log(complaints[0]);
-                res.render('admin-content', {
-                    title: 'All Complaints',
-//                    reg_complaints   : complaints.filter(c => c.status == 'registered' || c.status === undefined),
-                    reg_complaints : complaints
-                });
-            }
+            Users.find({ type: 'engineer' }, function (err, engineer) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(complaints[0]);
+                    res.render('admin-content', {
+                        title: 'All Complaints',
+                        //                    reg_complaints   : complaints.filter(c => c.status == 'registered' || c.status === undefined),
+                        reg_complaints: complaints,
+                        engineers:engineer
+                    });
+                }
+            });
         });
     }
     else if (req.user.type === 'user') {
@@ -124,7 +127,7 @@ app.get('/', function (req, res) {
                 res.render('user-content', {
                     complaints: complaints
                 });
-        
+
         });
     }
     else {

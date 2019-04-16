@@ -97,13 +97,22 @@ app.get('/', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    console.log(complaints[0]);
-                    res.render('admin-content', {
-                        title: 'All Complaints',
-                        //                    reg_complaints   : complaints.filter(c => c.status == 'registered' || c.status === undefined),
-                        reg_complaints: complaints,
-                        engineers:engineer
-                    });
+                    if (renderer === 'pug'){
+                        res.render('index', {
+                            title: 'All Complaints',
+                            complaints: complaints
+                        });
+                    }
+                    else{
+                        console.log(complaints[0]);
+                        res.render('admin-content', {
+                            title: 'All Complaints',
+                            //                    reg_complaints   : complaints.filter(c => c.status == 'registered' || c.status === undefined),
+                            reg_complaints: complaints,
+                            engineers:engineer
+                        });
+
+                    }
                 }
             });
         });
@@ -137,10 +146,20 @@ app.get('/', function (req, res) {
                 console.log(err);
             }
             else {
-                res.render('engineer-content', {
-                    title: 'Complaints Assigned',
-                    complaints: complaints
-                });
+                if(renderer === 'pug'){
+
+                    res.render('index', {
+                        title: 'Assigned Complaints',
+                        complaints: complaints
+                    });
+                }
+                else{
+                    res.render('engineer-content', {
+                        title: 'Complaints Assigned',
+                        complaints: complaints
+                    });
+
+                }
             }
         });
 

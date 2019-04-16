@@ -98,8 +98,9 @@
               <form action="/complaints/assign/" method="POST" id="assignForm"></form>
               <div class="form-group col-md-8">
                 <select name="engineer" id="engineer" class="form-control">
-                  <option value="">Engineer 1</option>
-                  <option value="">Engineer 2</option>
+                {% for engineer in engineers %}
+                  <option value="{{engineer['_id']}}"> {{engineer.name}} </option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="col-md-4">

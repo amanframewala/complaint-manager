@@ -94,19 +94,20 @@
               </table>
               <p> <em>2. Choose an engineer to resolve the complaint.</em></p>
             </div>
-            <div class="mt-0 pt-2 card-body rounded row">
-              <form action="/complaints/assign/" method="POST" id="assignForm"></form>
-              <div class="form-group col-md-8">
-                <select name="engineer" id="engineer" class="form-control">
-                {% for engineer in engineers %}
-                  <option value="{{engineer['_id']}}"> {{engineer.name}} </option>
-                  {% endfor %}
-                </select>
+            <form action="/complaints/assign/" method="POST" id="assignForm">
+              <div class="mt-0 pt-2 card-body rounded row">
+                  <div class="form-group col-md-8">
+                    <select name="engineer" id="engineer" class="form-control">
+                    {% for engineer in engineers %}
+                      <option value="{{engineer['_id']}}"> {{engineer.name}} </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                      <input type="submit" class="btn btn-primary d-block mx-auto btn-block" style="max-width:300px;" value="Assign" />
+                  </div>
               </div>
-              <div class="col-md-4">
-                  <button class="btn btn-primary d-block mx-auto btn-block" style="max-width:300px;">Assign</button>
-              </div>
-            </div>
+            </form>
       </div>
     </div>
   </div>

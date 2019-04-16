@@ -78,7 +78,8 @@
                 </div> -->
                 <br />
                 <button class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editModal" >Edit</button>&nbsp;&nbsp;&nbsp;
-                <button class="btn btn-danger btn-sm">Delete</button>
+                <input type="hidden" value="{{ complaint._id }}" class="comp_id" />
+                <button class="btn btn-danger btn-sm delete-complaint" data-id="{{ complaint._id }}">Delete</button>
               </div>
             </div>
             {% endfor %}
@@ -97,7 +98,7 @@
                   <div class="col-md-12 mb-3">
                     <label for="categories">Categories</label>
                     <br />
-                    <select id="categories" class="js-example-basic-multiple form-control d-block" name="categories[]" multiple="multiple" >
+                    <select id="categories" class="js-example-basic-multiple form-control d-block" name="category" multiple="multiple" >
                       <option value="Construction">Construction</option>
                       <option value="Misc">Miscelaneous</option>
                     </select>
@@ -132,20 +133,23 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="new-title">Title</label>
-          <input type="text" name="new-title" id="new-title" class="form-control" placeholder="A short title to summarize the complaint" required /> 
+      <form action="/complaints/edit/" method="POST" id="editForm">
+        <div class="modal-body">
+          <input type="hidden" />
+          <div class="form-group">
+            <label for="new-title">Title</label>
+            <input type="text" name="title" id="new-title" class="form-control" placeholder="A short title to summarize the complaint" required /> 
+          </div>
+          <div class="form-group">
+            <label for="new-body">Title</label>
+            <textarea type="text" name="body" id="new-body" class="form-control" placeholder="Give a detailed description of the complaint." required ></textarea>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="new-body">Title</label>
-          <textarea type="text" name="new-body" id="new-body" class="form-control" placeholder="Give a detailed description of the complaint." required ></textarea>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+        </form>
     </div>
   </div>
 </div>
@@ -177,10 +181,13 @@ $('.edit-btn').click(function() {
   $('#new-title').val($(this).siblings('.c-title').eq(0).text());
   $('#new-body').val($(this).siblings('.c-body').eq(0).text());
 
+  const val = $(this).siblings('.comp_id').eq(0).val();
+
+  $('#editForm').attr('action', `/complaints/edit/${val}`)
   $('#editModal').modal('show');
 });
 </script>
 
-
+<script src="/public/js/main.js"></script>
 
 {% endblock %}

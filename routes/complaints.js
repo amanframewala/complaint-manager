@@ -94,16 +94,18 @@ router.post('/add', ensureAuthenticated, function (req, res) {
 // Update complaint
 router.post('/edit/:id', function (req, res) {
     let complaint = {};
+    console.log(complaint);
     complaint.title = req.body.title;
-    complaint.author = req.body.author;
+    //complaint.author = req.body.author;
     complaint.body = req.body.body;
-    complaint.status = 'registered';
-    complaint.engineer = 'none';
-    complaint.category = req.body.category;
+    //complaint.status = 'registered';
+    //complaint.engineer = 'none';
+    complaint.timestamp = Date.now();
+    //complaint.category = req.body.category;
 
     let query = { _id: req.params.id }
 
-    Complaints.updateOne(query, complaint, function (err) {
+    Complaints.update(query, complaint, function (err) {
         if (err) {
             console.log(err);
             return;
@@ -161,8 +163,10 @@ router.delete('/:id', function (req, res) {
     let query = { _id: req.params.id };
 
     Complaints.findById(req.params.id, function (err, complaint) {
-        if (complaint.author !== req.user._id) {
+        if (complaint.author !== req.user.id) {
             res.status(500).send();
+
+            console.log('Author:', complaint.author, req.user.id);
         } else {
             Complaints.remove(query, function (err) {
                 if (err) {

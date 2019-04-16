@@ -14,24 +14,14 @@
 <div class="bg-white border rounded">
   <h1 class="text-center mb-2 mt-5">Complaints to be Resolved</h1>
   <div class=" d-flex flex-row p-3 justify-content-around">
+    {% for complaint in complaints %}
     <div class="card-body bordered rounded m-3" style="max-width:400px;">
-      <h5>This is a title for the card</h5>
+      <h5>{{ complaint.title }}</h5>
       <hr />
-      <p class="mb-3">This is the desciption</p>
-      <button class="btn btn-primary btn-sm">Resolved</button>
+      <p class="mb-3">{{ complaint.body }}</p>
+      <button class="btn btn-primary btn-sm solved-complaint" data-id='{{ complaint._id }}'>Resolved</button>
     </div>
-    <div class="card-body bordered rounded m-3" style="max-width:400px;">
-      <h5>This is a title for the card</h5>
-      <hr />
-      <p class="mb-3">This is the desciption</p>
-      <button class="btn btn-primary btn-sm">Resolved</button>
-    </div>
-    <div class="card-body bordered rounded m-3" style="max-width:400px;">
-      <h5>This is a title for the card</h5>
-      <hr />
-      <p class="mb-3">This is the desciption</p>
-      <button class="btn btn-primary btn-sm">Resolved</button>
-    </div>
+    {% endfor %}
   </div>
 </div>
 
@@ -56,7 +46,7 @@
 
 <script src="/public/js/chooseEngineer.js"></script>
 
-
+<script src="/public/js/main.js"></script>
 
 
 {% endblock %}

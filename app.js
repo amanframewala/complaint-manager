@@ -85,6 +85,7 @@ app.get('*', function (req, res, next) {
 // ======================ROUTES=========================
 // Home Route
 app.get('/', function (req, res) {
+    console.log(req.user)
     if(req.user === undefined) {
         res.redirect('/users/login');
         return;

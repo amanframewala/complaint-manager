@@ -17,8 +17,8 @@
             <img src="/assets/img/user/u6.jpg" alt="user image">
           </div>
           <div class="card-body">
-            <h4 class="py-2 text-dark">Albrecht Straub</h4>
-            <p>Albrecht.straub@gmail.com</p>
+            <h4 class="py-2 text-dark">{{ user.name }}</h4>
+            <p>{{ user.email }}</p>
           </div>
         </div>
         <div class="d-flex justify-content-around ">
@@ -106,12 +106,12 @@
                     <label for="complaint-details">Description</label>
                     <textarea type="text" name="body" id="complaint-body" class="form-control" placeholder="Give a detailed description of the complaint." required ></textarea>
                   </div>
-                  <!-- <div class="col-md-12 mb-3">
-                    <label for="files">Photos/Screenshots</label>
-                    <input type="file" name="files" id="files" class="form-control-file" multiple/>
+                  <div class="col-md-12 mb-3">
+                    <!-- <label for="files">Photos/Screenshots</label>
+                    <input type="file" name="files" id="files" class="form-control-file" multiple/> -->
                     <br />
                     <button class="btn btn-primary" type="submit">Submit Complaint</button>
-                  </div> -->
+                  </div>
                 </form>
               </div>
             </div>

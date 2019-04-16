@@ -14,7 +14,7 @@ router.get('/edit/:id', ensureAuthenticated, function (req, res) {
             console.log(err);
         }
         else {
-            if (complaint.author != req.user._id) {
+            if (complaint.author !== req.user._id) {
                 req.flash('danger', 'Not authorized');
                 res.redirect('/');
             }
@@ -36,7 +36,7 @@ router.get('/assign/:id', ensureAuthenticated, function (req, res) {
             else {
                 console.log('Engineer',engineer);
 
-                if (req.user.type != 'admin') {
+                if (req.user.type !== 'admin') {
                     req.flash('danger', 'Not authorized');
                     res.redirect('/');
                 }
@@ -76,6 +76,8 @@ router.post('/add', ensureAuthenticated, function (req, res) {
         complaint.body = req.body.body;
         complaint.status = 'Registered';
         complaint.engineer = 'none';
+        complaint.timestamp = Date.now();
+        complaint.category = req.body.category;
 
         complaint.save(function (err) {
             if (err) {
@@ -97,6 +99,7 @@ router.post('/edit/:id', function (req, res) {
     complaint.body = req.body.body;
     complaint.status = 'registered';
     complaint.engineer = 'none';
+    complaint.category = req.body.category;
 
     let query = { _id: req.params.id }
 
@@ -158,7 +161,7 @@ router.delete('/:id', function (req, res) {
     let query = { _id: req.params.id };
 
     Complaints.findById(req.params.id, function (err, complaint) {
-        if (complaint.author != req.user._id) {
+        if (complaint.author !== req.user._id) {
             res.status(500).send();
         } else {
             Complaints.remove(query, function (err) {

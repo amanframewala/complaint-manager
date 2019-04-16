@@ -1,1 +1,1 @@
-module.exports = 'twig';
+module.exports = 'pug';

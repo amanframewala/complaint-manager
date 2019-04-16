@@ -1,4 +1,4 @@
-{% set title = 'Test' %}
+{% set title = 'Dashboard' %}
 
 {% extends "user-layout.twig" %}
 {% block content %}
@@ -24,15 +24,15 @@
         <div class="d-flex justify-content-around ">
           <div class="text-center pb-4">
             <h6 class="text-dark pb-2">1503</h6>
-            <p>Pending</p>
+            <p>Requested</p>
           </div>
           <div class="text-center pb-4">
             <h6 class="text-dark pb-2">2905</h6>
-            <p>Queued</p>
+            <p>Assigned</p>
           </div>
           <div class="text-center pb-4">
             <h6 class="text-dark pb-2">1200</h6>
-            <p>Resolved</p>
+            <p>Solved</p>
           </div>
         </div>
 
@@ -60,14 +60,14 @@
         </ul>
         <div class="tab-content px-3 px-xl-5" id="myTabContent">
           <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+            {% for complaint in complaints %}
             <div class="media mt-5 profile-timeline-media">
               <div class="media-body">
-                <h6 class="mt-0 text-dark">Potholes everywhere! Valve, plz fix</h6>
-                <span>Road Constructions</span>
-                <span class="float-right">5 mins ago</span>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                  magna aliqua. ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                <div class="d-inline-block rounded overflow-hidden mt-4 mr-0 mr-lg-4">
+                <h6 class="mt-0 text-dark c-title">{{ complaint.title }}</h6>
+                <span>{{ complaint.status }}</span>
+                <span class="float-right">Time</span>
+                <p class="c-body">{{ complaint.body }}</p>
+                <!-- <div class="d-inline-block rounded overflow-hidden mt-4 mr-0 mr-lg-4">
                   <img src="/assets/img/products/pa1.jpg" alt="Product">
                 </div>
                 <div class="d-inline-block rounded overflow-hidden mt-4 mr-0 mr-lg-4">
@@ -75,9 +75,13 @@
                 </div>
                 <div class="d-inline-block rounded overflow-hidden mt-4 mr-0 mr-lg-4">
                   <img src="/assets/img/products/pa3.jpg" alt="Product">
-                </div>
+                </div> -->
+                <br />
+                <button class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editModal" >Edit</button>&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm">Delete</button>
               </div>
             </div>
+            {% endfor %}
           </div>
           <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <div class="card card-default mt-4 mx-auto" style="max-width:600px;">
@@ -85,7 +89,7 @@
                 <h2>Issue a complaint</h2>
               </div>
               <div class="card-body">
-                <form id="complaintForm" method="POST" enctype="multipart/form-data">
+                <form id="complaintForm" method="POST" action="/complaints/add">
                   <div class="col-md-12 mb-3">
                     <label for="complaint-title">Title</label>
                     <input type="text" name="title" id="title" class="form-control" placeholder="A short title to summarize the complaint" required />    
@@ -102,12 +106,12 @@
                     <label for="complaint-details">Description</label>
                     <textarea type="text" name="body" id="complaint-body" class="form-control" placeholder="Give a detailed description of the complaint." required ></textarea>
                   </div>
-                  <div class="col-md-12 mb-3">
+                  <!-- <div class="col-md-12 mb-3">
                     <label for="files">Photos/Screenshots</label>
-                    <input type="file" name="files" id="files" class="form-control-file"/>
+                    <input type="file" name="files" id="files" class="form-control-file" multiple/>
                     <br />
                     <button class="btn btn-primary" type="submit">Submit Complaint</button>
-                  </div>
+                  </div> -->
                 </form>
               </div>
             </div>
@@ -118,6 +122,33 @@
   </div>
 </div>
 
+<!---------EDIT MODAL -->
+<div class="modal" tabindex="-1" role="dialog" id="editModal" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Complaint</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="new-title">Title</label>
+          <input type="text" name="new-title" id="new-title" class="form-control" placeholder="A short title to summarize the complaint" required /> 
+        </div>
+        <div class="form-group">
+          <label for="new-body">Title</label>
+          <textarea type="text" name="new-body" id="new-body" class="form-control" placeholder="Give a detailed description of the complaint." required ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="/assets/plugins/jquery/jquery.min.js"></script>
 
 
@@ -141,6 +172,15 @@
 $('.js-example-basic-multiple').select2();
 </script>
 
-<script src="/public/js/complaintForm.js"></script>
+<script type="text/javascript">
+$('.edit-btn').click(function() {
+  $('#new-title').val($(this).siblings('.c-title').eq(0).text());
+  $('#new-body').val($(this).siblings('.c-body').eq(0).text());
+
+  $('#editModal').modal('show');
+});
+</script>
+
+
 
 {% endblock %}

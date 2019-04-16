@@ -3,13 +3,14 @@ $('#complaintForm').submit(function(e){
 
   let formData = {
     title: $('#title').val(),
-    body: $('#complaint-body').val(),
-    categories: $('#categories').val()
+    desc: $('#complaint-body').val(),
+    categories: $('#categories').val(),
+    files: $('#files').val()
   }
   console.log(formData);
-
+  console.log( new FormData($(this)[0]))
   $.ajax({
-    url: '/add',
+    url: '/complaints/add',
     type: 'POST',
     data: formData,
     success: function (data) {

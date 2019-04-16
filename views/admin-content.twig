@@ -1,0 +1,138 @@
+{% set title = 'Admin' %}
+
+{% extends "admin-layout.twig" %}
+{% block content %}
+<style>
+  .select2.select2-container.select2-container--default{
+    width: 100% !important;
+}
+  tr {
+    cursor: pointer;
+  }
+</style>
+
+<div class="bg-white border rounded">
+  <div class="row no-gutters">
+    <div class="col-lg-4 col-xl-4">
+      <h3 class="mt-4 text-center">Add an Engineer</h3>
+      <hr />
+      <div class="card-body">
+        <form action="/users/add" method="POST" >
+          <div class="form-row">
+            <div class="col-md-12 mb-3">
+              <label for="name">Full Name</label>
+              <input type="text" class="form-control" name="name" id="name" placeholder="Name" required>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Email"  name="email" required>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" name="username" id="username" placeholder="Username" aria-describedby="inputGroupPrepend3"
+                required>
+              <div class="invalid-feedback">
+                Please choose a username.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 mb-3">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+              <div class="invalid-feedback">
+                Please provide a valid password.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="password2">Confirm Password</label>
+              <input type="password" class="form-control" name="password2" id="password2" placeholder="Confirm Password" required>
+              <div class="invalid-feedback">
+                Please provide the password as mentioned previously.
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" type="submit">Submit form</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-8 col-xl-8">
+      <div class="profile-content-right py-4">
+        
+        <div class="tab-content px-3 px-xl-5" id="myTabContent">
+            <h3 class="mt-4 text-center">Assign Engineers</h3>
+            <hr />
+
+            <div class="card-body">
+              <p class="mb-4">The table shows a list of Registered complaints that are pending to be appointed. To appoint
+                an engineer: <br /><br />
+                <em>1. Click on a complaint to be assigned.</em></p>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                </thead>
+                <tbody id="complaintTable">
+                  {% for complaint in reg_complaints %}
+                  <tr>
+                    <td>{{ complaint.title }}</td>
+                    <td>{{ complaint.body }}</td>
+                    <td>16 April 2019</td>
+                    <input type="hidden" class="c_id" value="{{complaint['_id']}}" />
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <p> <em>2. Choose an engineer to resolve the complaint.</em></p>
+            </div>
+            <div class="mt-0 pt-2 card-body rounded row">
+              <form action="/complaints/assign/" method="POST" id="assignForm"></form>
+              <div class="form-group col-md-8">
+                <select name="engineer" id="engineer" class="form-control">
+                  <option value="">Engineer 1</option>
+                  <option value="">Engineer 2</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                  <button class="btn btn-primary d-block mx-auto btn-block" style="max-width:300px;">Assign</button>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/plugins/jquery/jquery.min.js"></script>
+
+
+
+<script src="/assets/plugins/slimscrollbar/jquery.slimscroll.min.js"></script>
+<script src="/assets/plugins/jekyll-search.min.js"></script>
+
+
+
+  
+
+
+<script src="/assets/plugins/jquery-mask-input/jquery.mask.min.js"></script>
+  
+
+
+<script src="/assets/js/sleek.bundle.js"></script>
+<script src="/assets/plugins/select2/js/select2.min.js"></script>
+
+<script src="/public/js/chooseEngineer.js"></script>
+
+
+
+
+{% endblock %}

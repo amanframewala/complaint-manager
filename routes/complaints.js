@@ -67,10 +67,8 @@ router.post('/add', ensureAuthenticated, function (req, res) {
     // Get errors
     let errors = req.validationErrors();
     if (errors) {
-        res.render('add_complaints', {
-            title: 'Add Complaint',
-            errors: errors
-        });
+        console.log(errors);
+        res.redirect('/');
     } else {
         let complaint = new Complaints();
         complaint.title = req.body.title;

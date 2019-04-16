@@ -1,0 +1,62 @@
+{% set title = 'Engineer' %}
+
+{% extends "admin-layout.twig" %}
+{% block content %}
+<style>
+  .select2.select2-container.select2-container--default{
+    width: 100% !important;
+}
+  tr {
+    cursor: pointer;
+  }
+</style>
+
+<div class="bg-white border rounded">
+  <h1 class="text-center mb-2 mt-5">Complaints to be Resolved</h1>
+  <div class=" d-flex flex-row p-3 justify-content-around">
+    <div class="card-body bordered rounded m-3" style="max-width:400px;">
+      <h5>This is a title for the card</h5>
+      <hr />
+      <p class="mb-3">This is the desciption</p>
+      <button class="btn btn-primary btn-sm">Resolved</button>
+    </div>
+    <div class="card-body bordered rounded m-3" style="max-width:400px;">
+      <h5>This is a title for the card</h5>
+      <hr />
+      <p class="mb-3">This is the desciption</p>
+      <button class="btn btn-primary btn-sm">Resolved</button>
+    </div>
+    <div class="card-body bordered rounded m-3" style="max-width:400px;">
+      <h5>This is a title for the card</h5>
+      <hr />
+      <p class="mb-3">This is the desciption</p>
+      <button class="btn btn-primary btn-sm">Resolved</button>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/plugins/jquery/jquery.min.js"></script>
+
+
+
+<script src="/assets/plugins/slimscrollbar/jquery.slimscroll.min.js"></script>
+<script src="/assets/plugins/jekyll-search.min.js"></script>
+
+
+
+  
+
+
+<script src="/assets/plugins/jquery-mask-input/jquery.mask.min.js"></script>
+  
+
+
+<script src="/assets/js/sleek.bundle.js"></script>
+<script src="/assets/plugins/select2/js/select2.min.js"></script>
+
+<script src="/public/js/chooseEngineer.js"></script>
+
+
+
+
+{% endblock %}

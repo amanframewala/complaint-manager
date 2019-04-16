@@ -32,6 +32,7 @@ app.use(expressValidator());
 
 // Bring in models
 let Complaints = require('./models/complaints');
+let Users = require('./models/users');
 
 // Load View engine
 app.set('views', path.join(__dirname, 'views'));
@@ -94,9 +95,11 @@ app.get('/', function (req, res) {
                 console.log(err);
             }
             else {
-                res.render('index', {
+                console.log(complaints[0]);
+                res.render('admin-content', {
                     title: 'All Complaints',
-                    complaints: complaints
+//                    reg_complaints   : complaints.filter(c => c.status == 'registered' || c.status === undefined),
+                    reg_complaints : complaints
                 });
             }
         });
@@ -106,18 +109,21 @@ app.get('/', function (req, res) {
         Complaints.find(query, function (err, complaints) {
             if (err) {
                 console.log(err);
+                res.send(err);
+                return;
             }
-            else {
-                if (renderer === 'pug')
-                    res.render('index', {
-                        title: 'Complaints Registered',
-                        complaints: complaints
-                    });
-                else
-                    res.render('user-content', {
-                        complaints: complaints
-                    });
-            }
+
+            Users.find({})
+            if (renderer === 'pug')
+                res.render('index', {
+                    title: 'Complaints Registered',
+                    complaints: complaints
+                });
+            else
+                res.render('user-content', {
+                    complaints: complaints
+                });
+        
         });
     }
     else {
@@ -127,7 +133,7 @@ app.get('/', function (req, res) {
                 console.log(err);
             }
             else {
-                res.render('index', {
+                res.render('engineer-content', {
                     title: 'Complaints Assigned',
                     complaints: complaints
                 });
